@@ -27,6 +27,10 @@ from __future__ import annotations
 import numpy as np
 import polars as pl
 
+# numpy.trapz was removed in NumPy 2.0; numpy.trapezoid is the replacement.
+# This shim supports both NumPy 1.x and 2.x without a version check.
+_trapezoid = getattr(np, "trapezoid", getattr(np, "trapz", None))
+
 
 def compute_gini(
     predictions: np.ndarray,
@@ -79,7 +83,7 @@ def compute_gini(
     # prepend (0, 0)
     cum_w = np.concatenate([[0.0], cum_w])
     cum_pred = np.concatenate([[0.0], cum_pred])
-    area_lorenz = np.trapz(cum_pred, cum_w)
+    area_lorenz = _trapezoid(cum_pred, cum_w)
 
     gini = 1.0 - 2.0 * area_lorenz
     return float(np.clip(gini, 0.0, 1.0))

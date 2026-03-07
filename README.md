@@ -13,13 +13,13 @@ The GLM surrogate will not match the GBM's Gini coefficient exactly. A well-tune
 ## Installation
 
 ```bash
-pip install insurance-distill
+uv add insurance-distill
 ```
 
 With CatBoost support:
 
 ```bash
-pip install "insurance-distill[catboost]"
+uv add "insurance-distill[catboost]"
 ```
 
 ## Quick start
