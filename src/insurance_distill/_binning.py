@@ -204,13 +204,13 @@ class OptimalBinner:
         )
         tree.fit(x.reshape(-1, 1), y, sample_weight=weights)
 
-        # Extract split thresholds from the tree's internal structure
+        # Extract split thresholds from the tree's internal structure.
+        # sklearn uses -2.0 as the sentinel for leaf nodes (TREE_LEAF constant).
+        # Filter it out to get only genuine split thresholds.
         thresholds = tree.tree_.threshold
         interior_cuts = sorted(
-            set(thresholds[thresholds != DecisionTreeRegressor().tree_.TREE_UNDEFINED])
+            float(c) for c in thresholds if c != -2.0
         )
-        # sklearn uses -2.0 (TREE_LEAF) as leaf sentinel - filter that out
-        interior_cuts = [c for c in interior_cuts if c > -1e10]
 
         return _edges_to_spec(feature, interior_cuts, "tree", self.label_decimals)
 

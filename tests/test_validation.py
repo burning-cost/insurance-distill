@@ -18,18 +18,21 @@ from insurance_distill._validation import (
 # ---------------------------------------------------------------------------
 
 
-def test_gini_perfect_predictions():
-    """Perfect rank order -> Gini = 1.0."""
-    y = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+def test_gini_highly_concentrated():
+    """Highly skewed predictions -> Gini well above 0.5."""
+    # Most predictions near 0, one extreme outlier
+    y = np.zeros(100)
+    y[-1] = 100.0
     gini = compute_gini(y)
+    # Gini of a distribution where 1% has 100% of the value is close to 1
     assert gini > 0.9
 
 
-def test_gini_random_predictions(rng):
-    """Random predictions -> Gini near 0."""
-    y = rng.uniform(0, 1, 10_000)
+def test_gini_perfectly_equal():
+    """Identical predictions -> Gini = 0 (no discrimination)."""
+    y = np.full(100, 0.5)
     gini = compute_gini(y)
-    assert gini < 0.1
+    assert gini == pytest.approx(0.0, abs=1e-6)
 
 
 def test_gini_constant_predictions():
@@ -55,6 +58,25 @@ def test_gini_with_weights(rng):
 def test_gini_empty():
     gini = compute_gini(np.array([]))
     assert gini == 0.0
+
+
+def test_gini_more_concentrated_is_higher(rng):
+    """More skewed distribution -> higher Gini."""
+    # Lognormal with high sigma is more skewed than low sigma
+    y_low = rng.lognormal(0, 0.2, 2000)
+    y_high = rng.lognormal(0, 2.0, 2000)
+    gini_low = compute_gini(y_low)
+    gini_high = compute_gini(y_high)
+    assert gini_high > gini_low
+
+
+def test_gini_symmetric_around_zero_weight():
+    """Predictions with uniform exposure and spread give reasonable Gini."""
+    y = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+    gini = compute_gini(y)
+    # The Gini of [1,2,3,4,5] is approximately 0.267
+    # It should be between 0 and 0.5 for this mild distribution
+    assert 0.0 < gini < 0.5
 
 
 # ---------------------------------------------------------------------------
