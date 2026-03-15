@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "insurance-distill"
-version = "0.1.0"
+version = "0.1.1"
 description = "Distil GBM models into multiplicative GLM factor tables for insurance rating engines."
 readme = "README.md"
 license = "MIT"
@@ -56,9 +56,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/burningcost/insurance-distill"
-Repository = "https://github.com/burningcost/insurance-distill"
-"Issue Tracker" = "https://github.com/burningcost/insurance-distill/issues"
+Homepage = "https://github.com/burning-cost/insurance-distill"
+Repository = "https://github.com/burning-cost/insurance-distill"
+"Issue Tracker" = "https://github.com/burning-cost/insurance-distill/issues"
+"Bug Tracker" = "https://github.com/burning-cost/insurance-distill/issues"
+Documentation = "https://github.com/burning-cost/insurance-distill#readme"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/insurance_distill"]
