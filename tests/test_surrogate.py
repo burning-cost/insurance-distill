@@ -6,17 +6,16 @@ import polars as pl
 import pytest
 
 from insurance_distill import SurrogateGLM
-from tests.conftest import NumericOnlyWrapper
 
 
 NUMERIC_FEATURES = ["driver_age", "vehicle_value", "ncd_years"]
 
 
 @pytest.fixture
-def simple_surrogate(synthetic_motor_data, fitted_gbm):
+def simple_surrogate(synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
     """A fitted SurrogateGLM on numeric features only."""
     data = synthetic_motor_data
-    model = NumericOnlyWrapper(fitted_gbm, NUMERIC_FEATURES)
+    model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
 
     surrogate = SurrogateGLM(
         model=model,
@@ -34,9 +33,9 @@ def simple_surrogate(synthetic_motor_data, fitted_gbm):
 # ---------------------------------------------------------------------------
 
 
-def test_fit_returns_self(synthetic_motor_data, fitted_gbm):
+def test_fit_returns_self(synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
     data = synthetic_motor_data
-    model = NumericOnlyWrapper(fitted_gbm, NUMERIC_FEATURES)
+    model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
     surrogate = SurrogateGLM(
         model=model,
         X_train=data["X"],
@@ -61,9 +60,9 @@ def test_fit_glm_predictions_positive(simple_surrogate):
     assert (simple_surrogate._glm_predictions > 0).all()
 
 
-def test_fit_before_fit_raises(synthetic_motor_data, fitted_gbm):
+def test_fit_before_fit_raises(synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
     data = synthetic_motor_data
-    model = NumericOnlyWrapper(fitted_gbm, NUMERIC_FEATURES)
+    model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
     surrogate = SurrogateGLM(
         model=model,
         X_train=data["X"],
@@ -190,9 +189,9 @@ def test_export_csv_readable_by_polars(simple_surrogate, tmp_path):
 # ---------------------------------------------------------------------------
 
 
-def test_gamma_family_fits(synthetic_motor_data, fitted_gbm):
+def test_gamma_family_fits(synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
     data = synthetic_motor_data
-    model = NumericOnlyWrapper(fitted_gbm, NUMERIC_FEATURES)
+    model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
     surrogate = SurrogateGLM(
         model=model,
         X_train=data["X"],
@@ -210,9 +209,9 @@ def test_gamma_family_fits(synthetic_motor_data, fitted_gbm):
 # ---------------------------------------------------------------------------
 
 
-def test_no_exposure_works(synthetic_motor_data, fitted_gbm):
+def test_no_exposure_works(synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
     data = synthetic_motor_data
-    model = NumericOnlyWrapper(fitted_gbm, NUMERIC_FEATURES)
+    model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
     surrogate = SurrogateGLM(
         model=model,
         X_train=data["X"],
@@ -230,9 +229,9 @@ def test_no_exposure_works(synthetic_motor_data, fitted_gbm):
 # ---------------------------------------------------------------------------
 
 
-def test_method_override_isotonic(synthetic_motor_data, fitted_gbm):
+def test_method_override_isotonic(synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
     data = synthetic_motor_data
-    model = NumericOnlyWrapper(fitted_gbm, NUMERIC_FEATURES)
+    model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
     surrogate = SurrogateGLM(
         model=model,
         X_train=data["X"],

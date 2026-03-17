@@ -21,6 +21,21 @@ import pytest
 from sklearn.ensemble import GradientBoostingRegressor
 
 
+class NumericOnlyWrapper:
+    """
+    Wraps a GBM trained on numeric columns only, but accepts a Polars
+    DataFrame with extra columns. Used to test that SurrogateGLM can
+    handle models that ignore some columns.
+    """
+
+    def __init__(self, gbm, numeric_cols: list[str]) -> None:
+        self._gbm = gbm
+        self._cols = numeric_cols
+
+    def predict(self, X: pl.DataFrame) -> np.ndarray:
+        return self._gbm.predict(X.select(self._cols).to_numpy())
+
+
 @pytest.fixture(scope="session")
 def rng() -> np.random.Generator:
     return np.random.default_rng(42)
@@ -109,16 +124,7 @@ def fitted_gbm_with_region(synthetic_motor_data: dict):
     return gbm
 
 
-class NumericOnlyWrapper:
-    """
-    Wraps a GBM trained on numeric columns only, but accepts a Polars
-    DataFrame with extra columns. Used to test that SurrogateGLM can
-    handle models that ignore some columns.
-    """
-
-    def __init__(self, gbm, numeric_cols: list[str]) -> None:
-        self._gbm = gbm
-        self._cols = numeric_cols
-
-    def predict(self, X: pl.DataFrame) -> np.ndarray:
-        return self._gbm.predict(X.select(self._cols).to_numpy())
+@pytest.fixture(scope="session")
+def numeric_only_wrapper_class():
+    """Expose NumericOnlyWrapper as a fixture for tests that need to instantiate it."""
+    return NumericOnlyWrapper
