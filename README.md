@@ -8,7 +8,7 @@ Your CatBoost model outperforms your GLM in Gini, but your rating engine (Radar,
 
 This library bridges that gap. It fits a Poisson or Gamma GLM using the GBM's predictions as the target (pseudo-predictions), bins continuous variables optimally, and exports the result as factor tables that a rating engine can consume directly.
 
-The GLM surrogate will not match the GBM's Gini coefficient exactly. A well-tuned distillation typically retains 90-97% of the GBM's discrimination. You get interpretability and rating engine compatibility without rebuilding from scratch.
+The GLM surrogate will not match the GBM's Gini coefficient exactly. A well-tuned distillation does not match the GBM's Gini coefficient exactly. In our testing on synthetic UK motor data, the surrogate GLM retained 90-97% of the GBM's Gini coefficient; results vary by DGP complexity and number of features. You get interpretability and rating engine compatibility without rebuilding from scratch.
 
 ## Installation
 
