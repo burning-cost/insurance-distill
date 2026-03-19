@@ -1,4 +1,6 @@
 # insurance-distill
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/burning-cost/insurance-distill/blob/main/notebooks/quickstart.ipynb)
+
 
 Distil GBM models into multiplicative GLM factor tables for insurance rating engines.
 
