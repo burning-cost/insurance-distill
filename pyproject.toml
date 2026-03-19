@@ -53,6 +53,7 @@ dev = [
     "pytest>=7",
     "catboost>=1.2",
     "matplotlib>=3.7",
+    "pdoc>=14.0.0",
 ]
 
 [project.urls]
@@ -60,7 +61,7 @@ Homepage = "https://github.com/burning-cost/insurance-distill"
 Repository = "https://github.com/burning-cost/insurance-distill"
 "Issue Tracker" = "https://github.com/burning-cost/insurance-distill/issues"
 "Bug Tracker" = "https://github.com/burning-cost/insurance-distill/issues"
-Documentation = "https://github.com/burning-cost/insurance-distill#readme"
+Documentation = "https://burning-cost.github.io/insurance-distill/"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/insurance_distill"]
