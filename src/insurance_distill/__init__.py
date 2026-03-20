@@ -70,4 +70,4 @@ __all__ = [
     "format_radar_csv",
 ]
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
