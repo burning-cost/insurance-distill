@@ -24,6 +24,23 @@ Quick start::
     print(report.metrics.summary())
 
     surrogate.export_csv("output/factors/")
+
+For partial-dependence-guided binning with lasso feature selection, see
+:class:`LassoGuidedGLM`, which implements the Lindholm & Palmquist (2024)
+approach (SSRN 4691626)::
+
+    from insurance_distill import LassoGuidedGLM
+
+    lg = LassoGuidedGLM(
+        gbm_model=fitted_gbm,
+        feature_names=["driver_age", "vehicle_value", "ncd_years"],
+        n_bins=8,
+        alpha=0.5,
+        family="poisson",
+    )
+    lg.fit(X_train, y_train, exposure=exposure_arr)
+    tables = lg.factor_tables()
+    lg.summary()
 """
 from ._surrogate import SurrogateGLM
 from ._binning import OptimalBinner
@@ -35,9 +52,11 @@ from ._validation import (
     double_lift_chart,
 )
 from ._export import build_factor_tables, build_glm_coefficients_df, format_radar_csv
+from .lasso_guided import LassoGuidedGLM
 
 __all__ = [
     "SurrogateGLM",
+    "LassoGuidedGLM",
     "OptimalBinner",
     "BinSpec",
     "ValidationMetrics",
