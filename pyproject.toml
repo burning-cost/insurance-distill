@@ -68,3 +68,8 @@ packages = ["src/insurance_distill"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "catboost>=1.2.10",
+]
