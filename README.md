@@ -21,7 +21,7 @@ The GLM surrogate will not match the GBM's Gini coefficient exactly. In our test
 
 ## Why bother
 
-Benchmarked on synthetic UK motor data — 50,000 policies, 6 rating factors (driver age, vehicle value, NCD years, vehicle age, annual mileage, region), Poisson frequency model. CatBoost trained for 300 iterations; surrogate GLM with CART binning (max 10 bins per continuous variable).
+Benchmarked on synthetic UK motor data — 30,000 policies, 7 rating factors (driver age, vehicle value, NCD years, vehicle age, annual mileage, region, vehicle group), Poisson frequency model. CatBoost trained for 300 iterations; surrogate GLM with CART binning (max 10 bins per continuous variable). See `benchmarks/benchmark.py` for the full script; numbers in this table are illustrative of the range produced on this synthetic DGP.
 
 | Metric | Direct GLM (fitted on claims) | GBM Surrogate GLM (this library) |
 |--------|-------------------------------|----------------------------------|
@@ -182,6 +182,8 @@ The base level (reference category) always has `relativity = 1.0`. All other lev
 **Rating engine rounding.** Factor tables exported to CSV are stored at full floating-point precision. Most rating engines round to 3–4 decimal places. Rounding at the factor level can accumulate multiplicatively across many factors. Validate the rounded factors against the GLM predictions before loading into production.
 
 **glum regularisation defaults to zero.** The default fit is unregularised. If the surrogate GLM is overfitting thin segments, pass `alpha_l1=` or `alpha_l2=` to `surrogate.fit()`. The regularisation path is not searched automatically.
+
+**No `.predict()` method on SurrogateGLM.** The class does not yet expose a `.predict(X)` method for out-of-sample scoring. The benchmark script works around this by calling `OptimalBinner.transform()` and constructing the design matrix directly. A formal `.predict()` method is on the roadmap; until then, use the pattern in `benchmarks/benchmark.py::predict_surrogate_on_holdout()`.
 
 ## Requirements
 
