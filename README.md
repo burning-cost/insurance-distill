@@ -9,6 +9,8 @@
 
 Distil GBM models into multiplicative GLM factor tables for insurance rating engines.
 
+**Blog post:** [From CatBoost to Radar in 50 Lines of Python](https://burning-cost.github.io/2026/03/01/from-catboost-to-radar-gbm-to-glm-distillation/)
+
 ## The problem
 
 Your CatBoost model outperforms your GLM in Gini, but your rating engine (Radar, Emblem, or any multiplicative system) needs factor tables — not a black box. You cannot load a gradient boosted tree into Radar.
@@ -47,6 +49,8 @@ With CatBoost support:
 ```bash
 uv add "insurance-distill[catboost]"
 ```
+
+> 💬 Questions or feedback? Start a [Discussion](https://github.com/burning-cost/insurance-distill/discussions). Found it useful? A ⭐ helps others find it.
 
 ## Quick start
 
