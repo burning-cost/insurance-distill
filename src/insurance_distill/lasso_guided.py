@@ -264,6 +264,13 @@ class LassoGuidedGLM:
         power: float = 1.5,
         pd_grid_resolution: int = 100,
     ) -> None:
+        if n_bins <= 0:
+            raise ValueError(f"n_bins must be a positive integer, got {n_bins!r}.")
+        if alpha < 0:
+            raise ValueError(f"alpha must be >= 0, got {alpha!r}.")
+        if pd_grid_resolution <= 0:
+            raise ValueError(f"pd_grid_resolution must be a positive integer, got {pd_grid_resolution!r}.")
+
         self.gbm_model = gbm_model
         self.feature_names = list(feature_names)
         self.n_bins = n_bins

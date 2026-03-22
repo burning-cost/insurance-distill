@@ -258,3 +258,52 @@ def test_distillation_report_repr(simple_surrogate):
     r = repr(report)
     assert "DistillationReport" in r
     assert "gini_ratio" in r
+
+
+# ---------------------------------------------------------------------------
+# Constructor validation tests
+# ---------------------------------------------------------------------------
+
+
+class TestSurrogateGLMConstructorValidation:
+    """SurrogateGLM should raise ValueError at construction for invalid params."""
+
+    def test_alpha_negative_raises(self, synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
+        data = synthetic_motor_data
+        model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
+        with pytest.raises(ValueError, match="alpha"):
+            SurrogateGLM(
+                model=model,
+                X_train=data["X"],
+                y_train=data["y"],
+                exposure=data["exposure"],
+                family="poisson",
+                alpha=-1.0,
+            )
+
+    def test_alpha_zero_is_valid(self, synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
+        """alpha=0.0 is the default (unregularised) — must not raise."""
+        data = synthetic_motor_data
+        model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
+        surrogate = SurrogateGLM(
+            model=model,
+            X_train=data["X"],
+            y_train=data["y"],
+            exposure=data["exposure"],
+            family="poisson",
+            alpha=0.0,
+        )
+        assert surrogate.alpha == 0.0
+
+    def test_positive_alpha_is_valid(self, synthetic_motor_data, fitted_gbm, numeric_only_wrapper_class):
+        data = synthetic_motor_data
+        model = numeric_only_wrapper_class(fitted_gbm, NUMERIC_FEATURES)
+        surrogate = SurrogateGLM(
+            model=model,
+            X_train=data["X"],
+            y_train=data["y"],
+            exposure=data["exposure"],
+            family="poisson",
+            alpha=0.5,
+        )
+        assert surrogate.alpha == 0.5

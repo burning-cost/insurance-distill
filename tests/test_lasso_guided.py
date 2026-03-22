@@ -510,3 +510,73 @@ def test_sample_weight_and_exposure_combined(synthetic_motor_data, fitted_gbm):
         exposure=data["exposure"],
     )
     assert lg._fitted
+
+
+# ---------------------------------------------------------------------------
+# Constructor validation tests
+# ---------------------------------------------------------------------------
+
+
+class TestLassoGuidedGLMConstructorValidation:
+    """LassoGuidedGLM should raise ValueError at construction for invalid params."""
+
+    def _make_dummy_model(self):
+        """A minimal model stub with a predict method."""
+        class _Stub:
+            def predict(self, X):
+                import numpy as np
+                return np.ones(len(X))
+        return _Stub()
+
+    def test_n_bins_zero_raises(self):
+        with pytest.raises(ValueError, match="n_bins"):
+            LassoGuidedGLM(
+                gbm_model=self._make_dummy_model(),
+                feature_names=["x"],
+                n_bins=0,
+            )
+
+    def test_n_bins_negative_raises(self):
+        with pytest.raises(ValueError, match="n_bins"):
+            LassoGuidedGLM(
+                gbm_model=self._make_dummy_model(),
+                feature_names=["x"],
+                n_bins=-5,
+            )
+
+    def test_alpha_negative_raises(self):
+        with pytest.raises(ValueError, match="alpha"):
+            LassoGuidedGLM(
+                gbm_model=self._make_dummy_model(),
+                feature_names=["x"],
+                alpha=-0.1,
+            )
+
+    def test_pd_grid_resolution_zero_raises(self):
+        with pytest.raises(ValueError, match="pd_grid_resolution"):
+            LassoGuidedGLM(
+                gbm_model=self._make_dummy_model(),
+                feature_names=["x"],
+                pd_grid_resolution=0,
+            )
+
+    def test_valid_params_do_not_raise(self):
+        """Baseline: default params should construct without error."""
+        model = LassoGuidedGLM(
+            gbm_model=self._make_dummy_model(),
+            feature_names=["x"],
+            n_bins=10,
+            alpha=1.0,
+            pd_grid_resolution=100,
+        )
+        assert model.n_bins == 10
+        assert model.alpha == 1.0
+
+    def test_alpha_zero_is_valid(self):
+        """alpha=0.0 means unpenalised — this is a legitimate use case."""
+        model = LassoGuidedGLM(
+            gbm_model=self._make_dummy_model(),
+            feature_names=["x"],
+            alpha=0.0,
+        )
+        assert model.alpha == 0.0

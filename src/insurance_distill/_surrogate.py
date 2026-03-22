@@ -94,6 +94,9 @@ class SurrogateGLM:
         predict_method: str | None = None,
         alpha: float = 0.0,
     ) -> None:
+        if alpha < 0:
+            raise ValueError(f"alpha must be >= 0, got {alpha!r}.")
+
         self.model = model
         self.X_train = X_train
         self.y_train = np.asarray(y_train, dtype=float)
