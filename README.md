@@ -50,7 +50,7 @@ With CatBoost support:
 uv add "insurance-distill[catboost]"
 ```
 
-> 💬 Questions or feedback? Start a [Discussion](https://github.com/burning-cost/insurance-distill/discussions). Found it useful? A ⭐ helps others find it.
+> Questions or feedback? Start a [Discussion](https://github.com/burning-cost/insurance-distill/discussions). Found it useful? A star helps others find it.
 
 ## Quick start
 
