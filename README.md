@@ -34,7 +34,7 @@ Benchmarked on synthetic UK motor data — 30,000 policies, 7 rating factors (dr
 
 The surrogate GLM recovers 95.2% of the GBM's Gini coefficient. A direct GLM fitted on the raw claims data achieves 88.0%. The 7-point difference is the noise reduction from fitting on GBM pseudo-predictions rather than individual claim events — the GBM has already smoothed the variance away.
 
-▶ [Run on Databricks](https://github.com/burning-cost/insurance-distill/blob/main/notebooks/01_motor_distillation_demo.py)
+▶ [Run on Databricks](https://github.com/burning-cost/burning-cost-examples/blob/main/notebooks/insurance_distill_demo.py)
 
 ---
 
@@ -42,6 +42,8 @@ The surrogate GLM recovers 95.2% of the GBM's Gini coefficient. A direct GLM fit
 
 ```bash
 uv add insurance-distill
+# or
+pip install insurance-distill
 ```
 
 With CatBoost support:
