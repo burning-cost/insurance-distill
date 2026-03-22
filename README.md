@@ -3,6 +3,7 @@
 
 
 [![PyPI](https://img.shields.io/pypi/v/insurance-distill)](https://pypi.org/project/insurance-distill/)
+[![Downloads](https://img.shields.io/pypi/dm/insurance-distill)](https://pypi.org/project/insurance-distill/)
 [![Python](https://img.shields.io/pypi/pyversions/insurance-distill)](https://pypi.org/project/insurance-distill/)
 [![Tests](https://img.shields.io/badge/tests-61%20passing-brightgreen)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)]()
