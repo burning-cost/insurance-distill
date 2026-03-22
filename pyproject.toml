@@ -7,7 +7,7 @@ name = "insurance-distill"
 version = "0.1.4"
 description = "Distil GBM models into multiplicative GLM factor tables for insurance rating engines."
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.10"
 authors = [
     { name = "Burning Cost", email = "pricing.frontier@gmail.com" },
