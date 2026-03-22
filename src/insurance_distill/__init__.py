@@ -70,4 +70,9 @@ __all__ = [
     "format_radar_csv",
 ]
 
-__version__ = "0.1.4"
+from importlib.metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version("insurance-distill")
+except PackageNotFoundError:
+    __version__ = "0.0.0"  # not installed
