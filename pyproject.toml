@@ -15,6 +15,7 @@ authors = [
 keywords = [
     "insurance", "pricing", "actuarial", "glm", "gbm", "catboost",
     "distillation", "surrogate", "radar", "emblem", "rating engine",
+    "UK", "personal lines",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -57,11 +58,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/burning-cost/insurance-distill"
+Homepage = "https://burning-cost.github.io/insurance-distill"
 Repository = "https://github.com/burning-cost/insurance-distill"
-"Issue Tracker" = "https://github.com/burning-cost/insurance-distill/issues"
-"Bug Tracker" = "https://github.com/burning-cost/insurance-distill/issues"
+Changelog = "https://github.com/burning-cost/insurance-distill/releases"
 Documentation = "https://burning-cost.github.io/insurance-distill/"
+Issues = "https://github.com/burning-cost/insurance-distill/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/insurance_distill"]
