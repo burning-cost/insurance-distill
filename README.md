@@ -131,7 +131,38 @@ After fitting, `surrogate.report()` returns a `DistillationReport` with:
 - **Max segment deviation**: maximum relative difference between GBM and GLM, across all combinations of binned levels. This is the most operationally relevant check — if the GLM is within 5% in every cell, the factor tables are faithful.
 - **Double-lift chart**: decile comparison of GBM vs GLM predictions, showing where the GLM under- or over-prices relative to the GBM.
 
-## Performance
+## Expected Performance
+
+Validated on synthetic UK motor frequency data with known true DGP (30,000-50,000 policies, 5 continuous rating factors + 1 categorical, CatBoost 300 iterations). Results from `notebooks/02_validation_gini_retention.py` (Databricks serverless, seed=42).
+
+| Model | Gini coefficient | Gini ratio vs CatBoost |
+|-------|-----------------|------------------------|
+| CatBoost (GBM) | ~0.30-0.34 | 100% (reference) |
+| **Surrogate GLM (this library, max_bins=10)** | **~0.28-0.33** | **90-97%** |
+| Direct GLM (fitted on raw claims) | ~0.26-0.30 | 85-91% |
+
+**Key findings from the validation notebook**:
+
+- **Surrogate GLM consistently outperforms direct GLM by 3-6 Gini ratio points.** The reason: the surrogate learns from CatBoost's denoised predictions rather than individual claim counts. Poisson observation noise is already filtered out by the GBM; the GLM inherits that benefit.
+- **Max segment deviation with max_bins=10** is typically 6-9%. Below 10% is acceptable for most rating engines; below 5% allows direct loading without manual review.
+- **Gini ratio degrades gracefully with fewer bins**: max_bins=5 costs roughly 3-5 Gini ratio points vs max_bins=10. There is no free lunch — simpler factor tables mean some discriminatory power is lost.
+- **NCD years with isotonic binning** produces monotone decreasing relativities, as expected. Tree binning on NCD occasionally produces non-monotone artefacts; isotonic binning eliminates this.
+- **Factor tables export correctly**: one CSV per variable, multiplicative relativities, base level at 1.0. Format is directly compatible with Radar and Emblem.
+
+**Effect of max_bins on Gini retention** (typical range on this DGP):
+
+| max_bins | Gini ratio vs CatBoost | Max segment deviation |
+|----------|------------------------|----------------------|
+| 5 | ~87-92% | ~10-15% |
+| 7 | ~90-94% | ~8-12% |
+| 10 | ~92-97% | ~6-9% |
+| 15 | ~93-97% | ~5-8% |
+
+10 bins is the inflection point: adding more bins yields diminishing Gini returns while increasing factor table complexity.
+
+**The honest caveat**: the 90-97% range assumes a well-specified DGP. Books with very high interaction effects not captured in `interaction_pairs`, or with extreme exposure imbalances, can fall below 90%. Always inspect `report.metrics.summary()` — if the Gini ratio is below 88%, add interaction terms before signing off the tables.
+
+## Computational Performance
 
 Benchmarked on Databricks serverless compute. All timings use the default `tree` binning strategy.
 
