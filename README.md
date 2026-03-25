@@ -283,6 +283,14 @@ The base level (reference category) always has `relativity = 1.0`. All other lev
 
 ---
 
+## Community
+
+- **Questions?** Start a [Discussion](https://github.com/burning-cost/insurance-distill/discussions)
+- **Found a bug?** Open an [Issue](https://github.com/burning-cost/insurance-distill/issues)
+- **Blog & tutorials:** [burning-cost.github.io](https://burning-cost.github.io)
+
+If this library saves you time, a star on GitHub helps others find it.
+
 ## Licence
 
 MIT. See [LICENSE](LICENSE).
