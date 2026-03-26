@@ -1,8 +1,8 @@
 name: Publish to PyPI
 
+# Manual trigger only — packages published via uv publish
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
 
 permissions:
   id-token: write
