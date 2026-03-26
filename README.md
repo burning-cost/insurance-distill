@@ -1,5 +1,6 @@
 # insurance-distill
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/burning-cost/insurance-distill/blob/main/notebooks/quickstart.ipynb)
+[![nbviewer](https://img.shields.io/badge/render-nbviewer-orange)](https://nbviewer.org/github/burning-cost/insurance-distill/blob/main/notebooks/quickstart.ipynb)
 
 
 [![PyPI](https://img.shields.io/pypi/v/insurance-distill)](https://pypi.org/project/insurance-distill/)
