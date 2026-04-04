@@ -30,7 +30,7 @@ jobs:
       - name: Generate docs
         run: pdoc -o ./docs insurance_distill
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./docs
 
